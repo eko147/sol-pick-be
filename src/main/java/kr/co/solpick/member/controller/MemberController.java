@@ -47,18 +47,19 @@ public class MemberController {
         Object principal = authentication.getPrincipal();
 
         Map<String, Object> claims = (Map<String, Object>) principal;
-        // claims에서 memberId 가져오기
-        Object idObj = claims.get("recipickUserId"); // 간단하게 하려면 익셉션 발생함
+
+
+        Object idObj = claims.get("recipickUserId");
         Integer memberId = (idObj instanceof Double) ?
                 ((Double) idObj).intValue() :
                 (Integer) idObj;
 
-        log.info("주문 내역 요청 수신: memberId={}", memberId);
+        log.info("주문 내역 요청 수신: recipickmemberId={}", memberId);
 
         List<OrderHistoryResponseDTO> orderHistory = orderService.getOrderHistory(memberId);
 
         if (orderHistory.isEmpty()) {
-            log.info("주문 내역 없음: memberId={}", memberId);
+            log.info("주문 내역 없음: recipickmemberId={}", memberId);
             return ResponseEntity.noContent().build();
         }
 

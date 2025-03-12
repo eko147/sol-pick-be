@@ -50,6 +50,7 @@ public class AuthService {
             // 3. 첫 로그인인 경우 레시픽에서 사용자 정보 가져오기
             RecipickMemberResponseDTO recipickUser = recipickAuthClient.getUserInfo(loginRequest.getEmail());
 
+
             // 4. 솔픽 DB에 사용자 정보 저장
             MemberDTO newMember = MemberDTO.builder()
                     .email(recipickUser.getEmail())
@@ -64,6 +65,7 @@ public class AuthService {
             // 5. 기존 회원은 솔픽 DB에서 정보 가져오기
             memberInfo = memberService.getMemberByEmail(loginRequest.getEmail());
             log.info("기존 회원 로그인: {}", memberInfo.getEmail());
+            log.info("레시픽 사용자 정보: memberId={}", memberInfo.getRecipickUserId());
         }
 
         // 6. JWT 토큰 생성
