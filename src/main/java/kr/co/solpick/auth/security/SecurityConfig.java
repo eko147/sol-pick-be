@@ -31,6 +31,9 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login").permitAll() // 로그인은 인증 없이 접근 가능
+                                .requestMatchers("/solpick/refrigerator/**").permitAll() // 식재료 관련
+                                .requestMatchers("/solpick/noti/**").permitAll() // 알림 관련
+                                .requestMatchers("/solpick/api/points").permitAll()
 //                        .requestMatchers("/member/**").permitAll() //순서가 중요 아래 코드보다 위에 있어야함
                         .anyRequest().authenticated() // 다른 모든 요청은 인증 필요
                 );
@@ -46,7 +49,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:3000"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
