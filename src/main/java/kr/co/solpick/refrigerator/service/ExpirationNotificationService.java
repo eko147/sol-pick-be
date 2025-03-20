@@ -1,5 +1,6 @@
 package kr.co.solpick.refrigerator.service;
 
+import kr.co.solpick.member.repository.MemberRepository;
 import kr.co.solpick.refrigerator.entity.ExpirationNotification;
 import kr.co.solpick.refrigerator.entity.Ingredient;
 import kr.co.solpick.refrigerator.entity.Notification;
@@ -31,6 +32,7 @@ public class ExpirationNotificationService {
     private final IngredientRepository ingredientRepository;
     private final NotificationRepository notificationRepository;
     private final ExpirationNotificationRepository expirationNotificationRepository;
+    private final MemberRepository memberRepository;
 
     // 매일 오전 9시 30분에 실행
     @Scheduled(cron = "0 30 9 * * ?", zone = "Asia/Seoul")
@@ -39,9 +41,10 @@ public class ExpirationNotificationService {
         LocalDateTime now = LocalDateTime.now();
         log.info("🟢 유통기한 알림 검사 시작: {}", now);
 
-        // 유저 ID 목록 가져오기 (실제로는 UserRepository에서 가져오기)
-        // 예시로 하드코딩된 값 사용
-        List<Long> userIds = List.of(1L);
+        // 유저 ID 목록 가져오기
+        List<Long> userIds = memberRepository.findAllMemberIds().stream()
+                .map(Long::valueOf)
+                .collect(Collectors.toList());
 
         for (Long userId : userIds) {
             // (최신순 조회로) 사용자의 모든 식재료 가져오기

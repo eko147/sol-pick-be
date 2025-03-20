@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/solpick/noti")
+@RequestMapping("/api/solpick/noti")
 @RequiredArgsConstructor
 public class NotificationController {
 

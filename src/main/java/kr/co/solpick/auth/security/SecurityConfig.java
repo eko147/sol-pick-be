@@ -34,6 +34,18 @@ public class SecurityConfig {
                                 .requestMatchers("/solpick/refrigerator/**").permitAll() // 식재료 관련
                                 .requestMatchers("/solpick/noti/**").permitAll() // 알림 관련
                                 .requestMatchers("/solpick/api/points").permitAll()
+                                .requestMatchers("/solpick/api/points/update").permitAll()
+                                .requestMatchers("/solpick/api/payment/verify-card").permitAll()
+                                .requestMatchers("/solpick/api/card/**").permitAll()
+                                .requestMatchers("/solpick/api/card-design/**").permitAll()
+                                .requestMatchers("/solpick/api/card-design/card-info/**").permitAll()
+                                .requestMatchers("/solpick/api/game/**").permitAll()
+                                .requestMatchers("/solpick/api/game/recipe/**").permitAll()
+                                .requestMatchers("/api/refrigerator/ingredients/**").permitAll()
+                                .requestMatchers("/api/refrigerator/recommend/**").permitAll()
+                                .requestMatchers("/api/allergy-management/**").permitAll()
+                                .requestMatchers("/api/user-allergy/**").permitAll()
+                                .requestMatchers("/api/meal-plan/**").permitAll()
 //                        .requestMatchers("/member/**").permitAll() //순서가 중요 아래 코드보다 위에 있어야함
                         .anyRequest().authenticated() // 다른 모든 요청은 인증 필요
                 );
@@ -51,7 +63,7 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(List.of("http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

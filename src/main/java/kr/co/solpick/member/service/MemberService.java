@@ -60,8 +60,8 @@ public class MemberService {
                 .name(member.getName())
                 .nickname(member.getNickname())
                 .recipickUserId(member.getRecipickUserId())
-                .createdAt(member.getCreatedAt())
-                .updatedAt(member.getUpdatedAt())
+//                .createdAt(member.getCreatedAt())
+//                .updatedAt(member.getUpdatedAt())
                 .build();
     }
 

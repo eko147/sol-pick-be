@@ -1,4 +1,4 @@
-package kr.co.solpick.api.external.point.service;
+package kr.co.solpick.api.external;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

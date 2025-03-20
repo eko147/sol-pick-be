@@ -21,22 +21,6 @@ public class MemberController {
 
     private final OrderService orderService;
 
-//    @GetMapping("/{memberId}/order")
-//    public ResponseEntity<List<OrderHistoryResponseDTO>> getOrderHistory(@PathVariable int memberId) {
-//        log.info("주문 내역 요청 수신: memberId={}", memberId);
-//
-//        List<OrderHistoryResponseDTO> orderHistory = orderService.getOrderHistory(memberId);
-//
-//        if (orderHistory.isEmpty()) {
-//            log.info("주문 내역 없음: memberId={}", memberId);
-//            return ResponseEntity.noContent().build();
-//        }
-//
-//        log.info("주문 내역 조회 성공: memberId={}, 건수={}", memberId, orderHistory.size());
-//        return ResponseEntity.ok(orderHistory);
-//    }
-
-
     @GetMapping("/order")
     public ResponseEntity<List<OrderHistoryResponseDTO>> getOrderHistory() {
         // SecurityContextHolder에서 인증 정보 가져오기

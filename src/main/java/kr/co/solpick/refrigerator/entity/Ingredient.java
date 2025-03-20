@@ -46,6 +46,7 @@ public class Ingredient {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    // 분류 관련 필드
     @Column(name = "main_category")
     private String mainCategory;
 

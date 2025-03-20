@@ -2,7 +2,8 @@ package kr.co.solpick.api.external.point.controller;
 
 import kr.co.solpick.api.external.point.dto.PointRequestDTO;
 import kr.co.solpick.api.external.point.dto.PointResponseDTO;
-import kr.co.solpick.api.external.point.service.ApiKeyService;
+import kr.co.solpick.api.external.ApiKeyService;
+import kr.co.solpick.api.external.point.dto.PointUpdateRequestDTO;
 import kr.co.solpick.point.service.PointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +50,56 @@ public class ExternalPointController {
             return PointResponseDTO.builder()
                     .success(false)
                     .message("포인트 조회 중 오류가 발생했습니다: " + e.getMessage())
+                    .points(0)
+                    .build();
+        }
+    }
+
+    @PostMapping("/points/update")
+    public PointResponseDTO updatePoints(@RequestBody PointUpdateRequestDTO request) {
+        log.info("포인트 업데이트 API 요청 받음: memberId={}, orderId={}, pointsUsed={}, totalPrice={}",
+                request.getMemberId(), request.getOrderId(), request.getPointsUsed(), request.getTotalPrice());
+
+        // API 키 유효성 검사
+        if (!apiKeyService.validateApiKey(request.getApiKey())) {
+            log.warn("잘못된 API 키: {}", request.getApiKey());
+            return PointResponseDTO.builder()
+                    .success(false)
+                    .message("유효하지 않은 API 키입니다.")
+                    .points(0)
+                    .build();
+        }
+
+        try {
+            // 포인트 사용 처리
+            boolean success = pointService.usePoints(
+                    request.getMemberId(),
+                    request.getOrderId(),
+                    request.getPointsUsed(),
+                    request.getTotalPrice()
+            );
+
+            if (success) {
+                // 현재 잔여 포인트 조회
+                int remainingPoints = pointService.getUserPointsByRecipickUserId(request.getMemberId());
+
+                return PointResponseDTO.builder()
+                        .success(true)
+                        .message("포인트 사용 처리가 완료되었습니다.")
+                        .points(remainingPoints)
+                        .build();
+            } else {
+                return PointResponseDTO.builder()
+                        .success(false)
+                        .message("포인트 사용 처리에 실패했습니다.")
+                        .points(0)
+                        .build();
+            }
+        } catch (Exception e) {
+            log.error("포인트 업데이트 중 오류 발생", e);
+            return PointResponseDTO.builder()
+                    .success(false)
+                    .message("포인트 업데이트 중 오류가 발생했습니다: " + e.getMessage())
                     .points(0)
                     .build();
         }

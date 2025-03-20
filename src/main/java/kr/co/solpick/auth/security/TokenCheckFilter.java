@@ -13,12 +13,18 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.security.SignatureException;
+import java.util.List;
 import java.util.Map;
 import java.util.Collections;
 @Log4j2
 public class TokenCheckFilter extends OncePerRequestFilter {
     private JWTUtil jwtUtil;
-
+    private static final List<String> EXCLUDED_PATHS = List.of(
+            "/api/refrigerator/ingredients",
+            "/api/refrigerator/recommend/",
+            "/api/user-allergy/",
+            "/api/meal-plan"
+    );
     public TokenCheckFilter (JWTUtil jwUtil) {
         this.jwtUtil = jwUtil;
     }
@@ -27,8 +33,11 @@ public class TokenCheckFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String path = request.getRequestURI();
-
-        if (!path.startsWith("/api")) { // /api 주소가 아니면(일반접속이면) 통과
+        if (EXCLUDED_PATHS.stream().anyMatch(path::startsWith)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        if (!path.startsWith("/api") ) { // /api 주소가 아니면(일반접속이면) 통과
             filterChain.doFilter(request, response);
             return;
         }

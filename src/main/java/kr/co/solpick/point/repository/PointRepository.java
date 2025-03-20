@@ -12,11 +12,21 @@ import java.util.Optional;
 @Repository
 public interface PointRepository extends JpaRepository<Point, Integer> {
 
-    // 특정 사용자의 최신 포인트 잔액 조회
-    @Query("SELECT p.pointBalance FROM Point p WHERE p.userId = :userId ORDER BY p.createdAt DESC")
+    @Query("SELECT p.pointBalance FROM Point p WHERE p.userId = :userId ORDER BY p.createdAt DESC LIMIT 1")
     Optional<Integer> findLatestPointBalanceByUserId(@Param("userId") Integer userId);
 
-    // 레시픽 회원 ID(recipick_user_id)로 최신 포인트 잔액 조회
-    @Query("SELECT p.pointBalance FROM Point p JOIN Member m ON p.userId = m.id WHERE m.recipickUserId = :recipickUserId ORDER BY p.createdAt DESC")
+    // 레시픽 회원 ID로 최신 포인트 잔액 조회
+    @Query("SELECT p.pointBalance FROM Point p JOIN Member m ON p.userId = m.id WHERE m.recipickUserId = :recipickUserId ORDER BY p.createdAt DESC LIMIT 1")
     Optional<Integer> findLatestPointBalanceByRecipickUserId(@Param("recipickUserId") Integer recipickUserId);
+
+    // 사용자 ID로 적립 포인트 합계 조회
+    @Query("SELECT COALESCE(SUM(p.pointAmount), 0) FROM Point p WHERE p.userId = :userId AND p.pointType = 'EARN' AND p.pointAmount > 0")
+    Integer findTotalEarnedPointsByUserId(@Param("userId") Integer userId);
+
+    // 사용자 ID로 사용 포인트 합계 조회
+    @Query("SELECT COALESCE(SUM(ABS(p.pointAmount)), 0) FROM Point p WHERE p.userId = :userId AND p.pointType = 'USE' AND p.pointAmount < 0")
+    Integer findTotalUsedPointsByUserId(@Param("userId") Integer userId);
+
+    // 사용자 ID로 포인트 내역 조회 (최신순)
+    List<Point> findAllByUserIdOrderByCreatedAtDesc(Integer userId);
 }

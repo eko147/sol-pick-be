@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/solpick/refrigerator/receipts")
+@RequestMapping("/api/solpick/refrigerator/receipts")
 @RequiredArgsConstructor
 public class ReceiptController {
 

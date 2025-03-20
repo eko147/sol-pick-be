@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,11 +27,14 @@ public class Point {
     @Column(name = "point_id")
     private Integer id;
 
-    @Column(name = "card_id", nullable = false)
-    private Integer cardId;
-
     @Column(name = "user_id", nullable = false)
     private Integer userId;
+
+    @Column(name = "card_id")
+    private Integer cardId;
+
+    @Column(name = "order_id")
+    private Integer orderId;
 
     @Column(name = "point_amount", nullable = false)
     private Integer pointAmount;
@@ -41,20 +45,14 @@ public class Point {
     @Column(name = "point_type")
     private String pointType;
 
-    @Column(name = "order_id")
-    private Integer orderId;
-
-    @Column(name = "transaction_amount", nullable = false)
+    @Column(name = "transaction_amount")
     private Integer transactionAmount;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "expire_at")
-    private LocalDate expireAt;
-
-    @Column(name = "created_date")
-    private LocalDate createdDate;
+//    @Column(name = "created_date")
+//    private LocalDateTime createdDate;
 
     @CreatedDate
     @Column(name = "created_at")
