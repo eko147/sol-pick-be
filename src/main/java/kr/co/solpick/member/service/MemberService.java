@@ -62,6 +62,7 @@ public class MemberService {
                 .recipickUserId(member.getRecipickUserId())
 //                .createdAt(member.getCreatedAt())
 //                .updatedAt(member.getUpdatedAt())
+                .lastSyncOrderId(member.getLastSyncOrderId())
                 .build();
     }
 
@@ -77,6 +78,21 @@ public class MemberService {
                 .phone("")  // 문자열로 직접 값 전달
                 .profileImageUrl(null)  // null도 직접 전달
                 .active("Y")
+                .lastSyncOrderId(dto.getLastSyncOrderId() != null ? dto.getLastSyncOrderId() : 0)
                 .build();
+    }
+
+    // 마지막 동기화 주문 ID 업데이트
+    @Transactional
+    public int updateLastSyncOrderId(Integer memberId, Integer orderId) {
+        return memberRepository.updateLastSyncOrderId(memberId, orderId);
+    }
+
+    // 마지막 동기화 주문 ID 가져오기
+    @Transactional(readOnly = true)
+    public Integer getLastSyncOrderId(Integer memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("회원 정보를 찾을 수 없습니다: " + memberId));
+        return member.getLastSyncOrderId();
     }
 }

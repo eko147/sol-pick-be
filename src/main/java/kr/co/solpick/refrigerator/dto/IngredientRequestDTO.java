@@ -17,4 +17,6 @@ public class IngredientRequestDTO {
     private String mainCategory;
     private String subCategory;
     private String detailCategory;
+    private LocalDateTime createdAt;
+    private Long orderHistoryId;
 }

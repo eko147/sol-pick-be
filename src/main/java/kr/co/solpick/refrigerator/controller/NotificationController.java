@@ -1,6 +1,7 @@
 package kr.co.solpick.refrigerator.controller;
 
 import kr.co.solpick.refrigerator.dto.NotificationResponseDTO;
+import kr.co.solpick.refrigerator.entity.Notification;
 import kr.co.solpick.refrigerator.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -41,5 +42,12 @@ public class NotificationController {
     public ResponseEntity<Long> getUnreadNotificationCount(@PathVariable Long userId) {
         Long unreadCount = notificationService.getUnreadNotificationCount(userId);
         return ResponseEntity.ok(unreadCount);
+    }
+
+    // 알림 생성
+    @PostMapping("/create")
+    public ResponseEntity<NotificationResponseDTO> createNotification(@RequestBody Notification notificationRequest) {
+        NotificationResponseDTO createdNotification = notificationService.createNotification(notificationRequest);
+        return ResponseEntity.ok(createdNotification);
     }
 }

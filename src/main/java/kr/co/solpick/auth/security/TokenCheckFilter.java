@@ -37,10 +37,17 @@ public class TokenCheckFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        if (!path.startsWith("/api") ) { // /api 주소가 아니면(일반접속이면) 통과
+        if (!path.startsWith("/api") && !path.startsWith("/solpick/api")) { // /api 주소가 아니면(일반접속이면) 통과
             filterChain.doFilter(request, response);
             return;
         }
+        if (path.equals("/solpick/api/points") || path.equals("/solpick/api/payment/verify-card") ||
+        path.equals("/solpick/api/points/update")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+
         log.info("Token Check Filter............");
         log.info("JWUtil: "+jwtUtil.toString());
 

@@ -56,4 +56,8 @@ public class Member {
 
     // nickname 필드가 있었으나 DB에 없으므로 제거
     private String nickname;
+
+    // 마지막 동기화 주문 ID
+    @Column(name = "last_sync_order_id")
+    private Integer lastSyncOrderId = 0; // 기본값 0으로 설정
 }

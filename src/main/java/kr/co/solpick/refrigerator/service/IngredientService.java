@@ -21,6 +21,15 @@ public class IngredientService {
     // 식재료 등록
     @Transactional
     public IngredientResponseDTO addIngredient(IngredientRequestDTO dto) {
+        // createdAt이 전달되지 않았으면, expiryDate에서 7일을 빼서 계산 (주문일)
+        LocalDateTime createdTime;
+
+        if (dto.getCreatedAt() != null) {
+            createdTime = dto.getCreatedAt(); // 명시적으로 전달된 경우
+        } else {
+            createdTime = LocalDateTime.now(); // 없으면 현재 시간
+        }
+
         Ingredient ingredient = Ingredient.builder()
                 .userId(dto.getUserId())
                 .name(dto.getName())
@@ -31,7 +40,7 @@ public class IngredientService {
                 .mainCategory(dto.getMainCategory())
                 .subCategory(dto.getSubCategory())
                 .detailCategory(dto.getDetailCategory())
-                .createdAt(LocalDateTime.now())
+                .createdAt(createdTime) // createdTime 값 전달
                 .updatedAt(LocalDateTime.now())
                 .build();
 

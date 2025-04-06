@@ -49,4 +49,23 @@ public class NotificationService {
     public Long getUnreadNotificationCount(Long userId) {
         return notificationRepository.countByUserIdAndIsReadFalse(userId);
     }
+
+    // 알림 생성
+    @Transactional
+    public NotificationResponseDTO createNotification(Notification notificationRequest) {
+        // 현재 시간 설정
+        LocalDateTime now = LocalDateTime.now();
+
+        Notification notification = Notification.builder()
+                .userId(notificationRequest.getUserId())
+                .type(notificationRequest.getType())
+                .message(notificationRequest.getMessage())
+                .isRead(false)
+                .createdAt(now)
+                .updatedAt(now)
+                .build();
+
+        Notification savedNotification = notificationRepository.save(notification);
+        return NotificationResponseDTO.fromEntity(savedNotification);
+    }
 }

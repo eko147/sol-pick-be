@@ -17,6 +17,7 @@ public class MemberDTO {
     private String name;
     private String nickname;
     private Integer recipickUserId;
+    private Integer lastSyncOrderId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;    // 요청/응답 공통
 }
